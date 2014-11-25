@@ -1,2 +1,2 @@
 # Programing
-## Scala, play2, Scalikejdbc, DDD
+## Scala, play2, Scalikejdbc, DDD ‚Ì•×‹­—p
