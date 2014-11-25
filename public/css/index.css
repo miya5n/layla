@@ -1,0 +1,42 @@
+#signin_table {
+position: fixed;
+top:33%;
+left:40%;
+vertical-align:left;
+text-align:left;
+background-color: #444444;
+font-style:oblique;
+filter:Alpha(opacity=70);
+}
+#signin-main {
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+text-align: center;
+-webkit-box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.1);
+-moz-box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.1);
+box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.1);
+width: 350px;
+padding-top:25px;
+padding-bottom: 15px;
+}
+#signin-main input {
+font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-size:1.0em;
+}
+#member_table {
+position: fixed;
+top:27%;
+left:40%;
+vertical-align:left;
+text-align:left;
+background-color: #444444;
+font-style:oblique;
+filter:Alpha(opacity=70);
+display: none;
+}
+#signin-main input[type="text"],input[type="password"] {
+width: 200px;
+padding: 10px;
+margin-bottom: 10px;
+}

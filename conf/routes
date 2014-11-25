@@ -1,0 +1,16 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                         controllers.Application.index(file = "public/index.html")
+POST    /menu                     controllers.Application.index(file = "public/menu.html")
+
+POST    /account/entry             controllers.AccountController.entry
+
+POST    /account/login             controllers.AccountController.login
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file             controllers.Assets.at(path="/public", file)
+
+GET     /view/xxx                 controllers.Application.index2(callback: String)

@@ -1,0 +1,27 @@
+body {
+font-family: 'Monotype Corsiva', 'HGê≥û≤èëëÃ-PRO', Meiryo, fantasy;
+margin:20px auto;
+line-height:1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+font-family: 'Monotype Corsiva', 'HGê≥û≤èëëÃ-PRO', Meiryo, fantasy;
+font-weight:lighter;
+}
+h1 {
+color:#663366;
+}
+h2 {
+color:#663333;
+}
+pre.code {
+background-color: #000000;
+color:#ffffff;
+width:800px;
+text-align: left;
+}
+pre.tbl {
+background-color: #99ccff;
+color:#000000;
+width:800px;
+text-align: left;
+}
