@@ -6,6 +6,7 @@ import scala.util.Failure
 import models.support.Validator
 import scalikejdbc.WrappedResultSet
 import scalikejdbc.ResultName
+import org.hamcrest.core.IsEqual
 
 case class Account(
     id: AccountId,
@@ -22,14 +23,14 @@ case class Account(
   lazy val ageCheck = Check(age, "年齢", min = 1, max = 99) is require and range
   lazy val emailCheck = Check(email, "Eメール") is require and Email
   lazy val passCheck = Check(pass, "パスワード") is require
-  lazy val passConfirmCheck = Check(passConfirm, "確認用パスワード") is require
+  lazy val confirmCheck = Check(passConfirm, "確認用パスワード") is require
+  lazy val passAndConfirmCheck = Check(pass, "パスワード") isEqual Check(passConfirm, "確認用パスワード")
 
   /**
    * 登録処理用Validation
-   * TODO passとpassConfirmのチェックが漏れている！
    */
   def validateForEntry: Either[Seq[String], Account] = {
-    Seq(idCheck, nameCheck, sexCheck, ageCheck, emailCheck, passCheck, passConfirmCheck).flatMap(_.hasError) match {
+    Seq(idCheck, nameCheck, sexCheck, ageCheck, emailCheck, passCheck, confirmCheck, passAndConfirmCheck).flatMap(_.hasError) match {
       case error if (error.isEmpty) => Right(this)
       case error                    => Left(error)
     }

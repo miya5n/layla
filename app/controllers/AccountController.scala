@@ -35,9 +35,11 @@ object AccountController extends Controller {
     )
   }
 
-  // TODO leftとrightの使い方がわからない
   def entry() = Action { implicit req =>
-    val d = Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry.left.map(a => BadRequest("")).right.get
+    val d = Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry match {
+      case Left(a)  => // BadRequestを返す!
+      case Right(b) => // 登録処理
+    }
     Ok("")
   }
 }

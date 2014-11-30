@@ -15,6 +15,12 @@ trait Validator {
       }
       case _ => this
     }
+
+    def isEqual(target: Check[T]) = (target.item == this.item) match {
+      case true  => this
+      case false => this.copy(errorMessage = Some(s"${target.itemName}と${this.itemName}が一致していません。"))
+    }
+
     def and(func: Check[T] => Either[String, Check[T]]) = is(func)
 
     def hasError = errorMessage
