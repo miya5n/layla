@@ -12,10 +12,11 @@ import models.account.AccountId
 import models.account.Account
 import models.account.SexType
 import models.account.User
+import models.account.AccountRepository
 
 object AccountController extends Controller {
 
-  // ログインフォーム
+  // TODO 早く消したいログインフォーム
   val loginForm = Form(
     tuple(
       "email" -> nonEmptyText,
@@ -25,15 +26,18 @@ object AccountController extends Controller {
       })
   )
 
+  // TODO 早く消したいログインフォーム
   def login() = Action { implicit req =>
+    Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry
     loginForm.bindFromRequest.fold(
       formWithErrors => BadRequest("だめよー"),
       user => Ok("").withSession("email" -> user._1)
     )
   }
 
+  // TODO leftとrightの使い方がわからない
   def entry() = Action { implicit req =>
-    Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry
+    val d = Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry.left.map(a => BadRequest("")).right.get
     Ok("")
   }
 }

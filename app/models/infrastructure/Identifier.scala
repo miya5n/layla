@@ -1,4 +1,4 @@
-package infrastructure
+package models.infrastructure
 
 trait Identifier[+A] {
 

@@ -1,7 +1,11 @@
 package models.account
 
-import infrastructure.Entity
-import scala.reflect.runtime.universe
+import models.infrastructure.Entity
+import scala.util.Success
+import scala.util.Failure
+import models.support.Validator
+import scalikejdbc.WrappedResultSet
+import scalikejdbc.ResultName
 
 case class Account(
     id: AccountId,
@@ -10,75 +14,31 @@ case class Account(
     age: Option[Int],
     email: Option[String],
     pass: Option[String],
-    passConfirm: Option[String]) extends Entity[AccountId] with Validator {
+    passConfirm: Option[String] = None) extends Entity[AccountId] with Validator {
 
-  lazy val nameCheck = check(name) is require
-  lazy val sexCheck = check(sex) is require
-  lazy val ageCheck = check(age) is require and range(1 to 99)
-  lazy val emailCheck = check(email) is require and isEmail
-  lazy val passCheck = check(pass) is require
-  lazy val passConfirmCheck = check(passConfirm) is require
+  lazy val idCheck = Check(Some(id), "id") is require
+  lazy val nameCheck = Check(name, "名前") is require
+  lazy val sexCheck = Check(sex, "性別") is require
+  lazy val ageCheck = Check(age, "年齢", min = 1, max = 99) is require and range
+  lazy val emailCheck = Check(email, "Eメール") is require and Email
+  lazy val passCheck = Check(pass, "パスワード") is require
+  lazy val passConfirmCheck = Check(passConfirm, "確認用パスワード") is require
 
   /**
-   * TODO とりあえず実装
+   * 登録処理用Validation
+   * TODO passとpassConfirmのチェックが漏れている！
    */
-  def validateForEntry = {
-    //    check(name) 
+  def validateForEntry: Either[Seq[String], Account] = {
+    Seq(idCheck, nameCheck, sexCheck, ageCheck, emailCheck, passCheck, passConfirmCheck).flatMap(_.hasError) match {
+      case error if (error.isEmpty) => Right(this)
+      case error                    => Left(error)
+    }
   }
 }
 
 /**
- * TODO 共通のとこに移動する
+ * Account用のFactoryオブジェクト
  */
-trait Validator {
-  var target: Option[_] = _
-
-  def check[T](data: Option[T]): Validator = {
-    target = data
-    this
-  }
-
-  def is(func: => Validator): Validator = func
-  def and(func: => Validator): Validator = func
-
-  def require: Validator = {
-    target match {
-      case None => throw new Exception("指定されていません。")
-      case _    => this
-    }
-  }
-
-  def minLength(min: Int): Validator = {
-    target.get match {
-      case x: String if (x.size >= min) => this
-      case _                            => throw new Exception
-    }
-  }
-
-  def maxLength(max: Int): Validator = {
-    target.get match {
-      case x: String if (x.size <= max) => this
-      case _                            => throw new Exception
-    }
-  }
-
-  def range(minToMax: Range): Validator = {
-    target.get match {
-      case x: Int if (x >= minToMax.head && x <= minToMax.last) => this
-      case _ => throw new Exception("指定範囲を超えています。")
-    }
-  }
-
-  def isEmail: Validator = {
-    val regex = """/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/""".r
-    target.get match {
-      case regex(value) => this
-      case _            => throw new Exception("Emailの形式が間違ってるわ！")
-    }
-  }
-
-}
-
 object Account {
 
   /**
@@ -103,4 +63,16 @@ object Account {
     )
   }
 
+  // TODO Scalikeの型がいるのが嫌だ
+  def apply(a: ResultName[Account], rs: WrappedResultSet): Account = {
+    val d = rs.short(a.sex)
+    Account(
+      AccountId(rs.long(a.id)),
+      rs.stringOpt(a.name),
+      Some(SexType.MAN),
+      rs.intOpt(a.age),
+      rs.stringOpt(a.email),
+      rs.stringOpt(a.pass)
+    )
+  }
 }

@@ -4,6 +4,9 @@ import scalikejdbc._
 
 case class User(email: String, name: String, password: String)
 
+/**
+ * TODO 消える予定
+ */
 object User extends SQLSyntaxSupport[User] {
 
   override val tableName = "account"
