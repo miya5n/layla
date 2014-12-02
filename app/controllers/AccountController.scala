@@ -1,45 +1,33 @@
 package controllers
 
-import play.api.mvc._
-import play.api.data._
-import play.api.data.Form
-import play.api.data.Forms._
-import models.support.EnumLike
-import play.api.data.format.Formatter
-import models.support.EnumCompanion
-import play.api.data.format.Formats._
-import models.account.AccountId
 import models.account.Account
-import models.account.SexType
-import models.account.User
 import models.account.AccountRepository
+import play.api.mvc.Action
+import play.api.mvc.Controller
 
-object AccountController extends Controller {
+object AccountController extends Controller with AccountRepository {
 
-  // TODO 早く消したいログインフォーム
-  val loginForm = Form(
-    tuple(
-      "email" -> nonEmptyText,
-      "pass" -> nonEmptyText
-    ) verifying ("Invalid email or password", result => result match {
-        case (email, password) => User.authenticate(email, password).isDefined
-      })
-  )
-
-  // TODO 早く消したいログインフォーム
   def login() = Action { implicit req =>
-    Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry
-    loginForm.bindFromRequest.fold(
-      formWithErrors => BadRequest("だめよー"),
-      user => Ok("").withSession("email" -> user._1)
-    )
+    Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForLogin match {
+      case Left(a) => BadRequest(a.mkString(","))
+      case Right(b) => {
+        authenticate(b.email.get, b.password.get) match {
+          case None          => BadRequest("だめよー")
+          case Some(account) => Ok("").withSession("email" -> account.email.get)
+        }
+      }
+    }
   }
 
   def entry() = Action { implicit req =>
-    val d = Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry match {
-      case Left(a)  => // BadRequestを返す!
-      case Right(b) => // 登録処理
+    Account(req.body.asFormUrlEncoded.getOrElse(Map.empty)).validateForEntry match {
+      case Left(a) => BadRequest("だめよー")
+      case Right(b) => {
+        save(b)
+        // メール送信処理
+        Ok("") // 登録処理
+      }
     }
-    Ok("")
   }
+
 }

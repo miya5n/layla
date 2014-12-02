@@ -7,7 +7,19 @@ package models.support
  * TODO 要リファクタリング
  */
 trait Validator {
-  case class Check[T](item: Option[T], itemName: String, min: Int = 0, max: Int = 0, private val errorMessage: Option[String] = None) {
+
+  def validate[V](checkList: Seq[Check[_]], model: V) = checkList.flatMap(_.getErrors) match {
+    case Nil   => Right(model)
+    case error => Left(error)
+  }
+
+  case class Check[T](
+      item: Option[T],
+      itemName: String,
+      min: Int = 0,
+      max: Int = 0,
+      private val errorMessage: Option[String] = None) {
+
     def is(func: Check[T] => Either[String, Check[T]]) = errorMessage match {
       case None => func(this) match {
         case Left(message) => this.copy(errorMessage = Some(message))
@@ -23,7 +35,7 @@ trait Validator {
 
     def and(func: Check[T] => Either[String, Check[T]]) = is(func)
 
-    def hasError = errorMessage
+    def getErrors = errorMessage
   }
 
   def require[T](target: Check[T]) = target.item match {
