@@ -11,4 +11,10 @@ package object account {
     case object WOMAN extends SexType(2)
     lazy val values: Seq[SexType] = Seq(MAN, WOMAN)
   }
+
+  trait REGIST_STATE
+  object REGIST_STATE extends REGIST_STATE {
+    val DEFINITIVE = 0
+    val PROVISIONAL = 1
+  }
 }

@@ -6,8 +6,8 @@
 GET     /                         controllers.Application.index(file = "public/index.html")
 POST    /menu                     controllers.Application.index(file = "public/menu.html")
 
-GET     /account/registration     controllers.AccountController.registration
-POST    /account/provisioning     controllers.AccountController.provisionalRegistration
+GET     /account/registration     controllers.AccountController.regist
+POST    /account/provisioning     controllers.AccountController.registAsProvisioning
 POST    /account/login            controllers.AccountController.login
 
 # Map static resources from the /public folder to the /assets URL path

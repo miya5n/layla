@@ -11,6 +11,12 @@ CREATE TABLE account (
  status TINYINT(2) NOT NULL default 0,
  provisioning TINYINT(2) NOT NULL default 0,
  entry_date TIMESTAMP NOT NULL,
- update_dateE TIMESTAMP NOT NULL,
+ update_date TIMESTAMP NOT NULL,
  PRIMARY KEY (ID)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE account_provision (
+ uuid VARBINARY(36) NOT NULL,
+ account_id INTEGER(10) NOT NULL,
+ entry_date TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

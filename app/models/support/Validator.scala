@@ -8,10 +8,12 @@ package models.support
  */
 trait Validator {
 
-  def validate[V](checkList: Seq[Check[_]], model: V) = checkList.flatMap(_.getErrors) match {
+  def diagnosis[V](errorList: Seq[String], model: V) = errorList match {
     case Nil   => Right(model)
     case error => Left(error)
   }
+
+  def validate(checkList: Check[_]*): Seq[String] = checkList.flatMap(_.getErrors)
 
   case class Check[T](
       item: Option[T],
@@ -36,6 +38,16 @@ trait Validator {
     def and(func: Check[T] => Either[String, Check[T]]) = is(func)
 
     def getErrors = errorMessage
+  }
+
+  def exists[T](target: Check[T]) = target.item match {
+    case None => Left(s"${target.itemName}は存在しません。")
+    case _    => Right(target)
+  }
+
+  def notExists[T](target: Check[T]) = target.item match {
+    case None => Right(target)
+    case _    => Left(s"${target.itemName}は既に存在します。")
   }
 
   def require[T](target: Check[T]) = target.item match {

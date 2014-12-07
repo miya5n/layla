@@ -4,6 +4,8 @@ trait Identifier[+A] {
 
   def id: A
 
+  val value: A = id
+
   val isDefined: Boolean = true
 
   val isEmpty: Boolean = !isDefined
