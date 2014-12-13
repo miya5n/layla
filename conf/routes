@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                         controllers.Application.index(file = "public/index.html")
-POST    /menu                     controllers.Application.index(file = "public/menu.html")
+GET     /menu                     controllers.Application.index(file = "public/menu.html")
 
 GET     /account/registration     controllers.AccountController.regist
 POST    /account/provisioning     controllers.AccountController.registAsProvisioning

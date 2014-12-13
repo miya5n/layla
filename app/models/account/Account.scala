@@ -29,11 +29,10 @@ case class Account(
   /** 認証処理用Validation */
   def validateForLogin: Either[Seq[String], Account] = {
     validate(emailCheck, passCheck) match {
-      case Nil =>
-        authenticate(email.get, password.get) match {
-          case None          => diagnosis(Seq("メールアドレス、パスワードが間違っています。"), this)
-          case Some(account) => diagnosis(Nil, account)
-        }
+      case Nil => authenticate(email.get, password.get) match {
+        case None          => diagnosis(Seq("メールアドレス、パスワードが間違っています。"), this)
+        case Some(account) => diagnosis(Nil, account)
+      }
       case errors => diagnosis(errors, this)
     }
   }
@@ -69,7 +68,7 @@ case class Account(
 
 /** Account用のFactoryオブジェクト  */
 object Account extends ModelFactory {
-  def apply(implicit data: Map[String, Seq[String]]): Account =
+  def apply(implicit data: Map[String, Any]): Account =
     Account(
       getOptValue[AccountId]("id").getOrElse(AccountId(0)),
       getOptValue[String]("name"),

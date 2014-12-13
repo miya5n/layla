@@ -8,24 +8,29 @@ object AccountController extends ControllerSupport {
   /** ログイン */
   def login() = Action { implicit req =>
     execute {
-      val email = createModel { Account(reqPostParameter) validateForLogin }.email.get
-      Ok("").withSession("email" -> email)
+      createAndCheck(Account(reqPostParameter) validateForLogin).map { acc =>
+        Redirect(s"${getProtcol}://${getDomain}/menu").withSession("email" -> acc.email.get)
+      }
     }
   }
 
   /** 本登録  */
   def regist() = Action { implicit req =>
     executeWithTx {
-      createModel { Account(reqGetParameter).validateForEntry }.registration
-      Ok("本登録完了")
+      createAndCheck(Account(reqGetParameter) validateForEntry).map { acc =>
+        acc.registration
+        Ok("本登録完了")
+      }
     }
   }
 
   /** 仮登録  */
   def registAsProvisioning() = Action { implicit req =>
     executeWithTx {
-      createModel { Account(reqPostParameter).validateForProvisioning }.provisioning(s"${getProtcol}://${getDomain}")
-      Ok("仮登録完了")
+      createAndCheck(Account(reqPostParameter) validateForProvisioning).map { acc =>
+        acc.provisioning(s"${getProtcol}://${getDomain}")
+        Ok("仮登録完了")
+      }
     }
   }
 }

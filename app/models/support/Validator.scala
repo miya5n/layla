@@ -8,7 +8,7 @@ package models.support
  */
 trait Validator {
 
-  def diagnosis[V](errorList: Seq[String], model: V) = errorList match {
+  def diagnosis[V](errorList: Seq[String], model: V): Either[Seq[String], V] = errorList match {
     case Nil   => Right(model)
     case error => Left(error)
   }

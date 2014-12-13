@@ -38,7 +38,7 @@ case class AccountProvision(
 }
 
 object AccountProvision extends ModelFactory {
-  def apply(implicit data: Map[String, Seq[String]]): AccountProvision = {
+  def apply(implicit data: Map[String, Any]): AccountProvision = {
     AccountProvision(
       getOptValue[String]("p"),
       getOptValue[AccountId]("id").getOrElse(AccountId(0)),

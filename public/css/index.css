@@ -8,6 +8,17 @@ background-color: #444444;
 font-style:oblique;
 filter:Alpha(opacity=70);
 }
+#account_table {
+position: fixed;
+top:27%;
+left:40%;
+vertical-align:left;
+text-align:left;
+background-color: #444444;
+font-style:oblique;
+filter:Alpha(opacity=70);
+display: none;
+}
 #signin-main {
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
@@ -21,21 +32,10 @@ padding-top:25px;
 padding-bottom: 15px;
 }
 #signin-main input {
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 font-size:1.0em;
 }
-#member_table {
-position: fixed;
-top:27%;
-left:40%;
-vertical-align:left;
-text-align:left;
-background-color: #444444;
-font-style:oblique;
-filter:Alpha(opacity=70);
-display: none;
-}
-#signin-main input[type="text"],input[type="password"] {
+#signin-main input[type="text"],input[type="email"],input[type="number"],input[type="password"] {
 width: 200px;
 padding: 10px;
 margin-bottom: 10px;

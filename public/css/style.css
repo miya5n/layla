@@ -1,5 +1,5 @@
 body {
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 margin:20px auto;
 line-height:1.5em;
 width:1700px;
@@ -8,13 +8,12 @@ div#container {
 position: relative;
 }
 h1, h2, h3, h4, h5, h6 {
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 font-weight:lighter;
 }
 a:link, a:visited {
-font-color:#D84F70;
 font-size: 18pt;
-#color:#000000;
+color:#D84F70;
 }
 a:hover {
 color:#10ACAC;
@@ -59,7 +58,7 @@ background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.0
 filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#D84F70, endColorstr=#1A0214);
 }
 header h1, header h2, header h3, header h4, header h5, header h6, header li, header p {
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 header h1 {
 font-size:2.3em;
@@ -172,7 +171,7 @@ background-image: -ms-linear-gradient(top, #FFE4E1, #AD5F0A);
 background-image: -moz-linear-gradient(top, #FFE4E1, #AD5F0A);
 background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0.0, #FFE4E1), color-stop(1.0, #AD5F0A));
 filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FFE4E1, endColorstr=#AD5F0A);
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 font-size: 1.4em;
 width:280px;
 height:40px;
@@ -189,7 +188,7 @@ border-radius:4px;
 behavior: url(border-radius.htc);
 }
 #acMenu dd {
-font-family: 'Monotype Corsiva', 'HG正楷書体-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 font-size: 10pt;
 width:240px;
 height:0px;
