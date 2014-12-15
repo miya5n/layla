@@ -7,23 +7,27 @@ import play.api.mvc.Result
 import scalikejdbc.DB
 
 trait ControllerSupport extends Controller {
+  private type ReqType = Request[AnyContent]
+  private type ReqPramMap = Map[String, Seq[String]]
+
   /** Getパラメータ */
-  def reqGetParameter(implicit req: Request[AnyContent]): Map[String, Seq[String]] = req.queryString
+  def reqGetParam(implicit req: ReqType): ReqPramMap = req.queryString
 
   /** Postパラメータ */
-  def reqPostParameter(implicit req: Request[AnyContent]): Map[String, Seq[String]] =
+  def reqPostParam(implicit req: ReqType): ReqPramMap =
     req.body.asFormUrlEncoded.getOrElse(Map.empty)
 
-  def createAndCheck[M](func: => Either[Seq[String], M]) =
-    func.left.map(errors => BadRequest(errors.mkString(","))).right
+  def execute[M](func1: => Either[Seq[String], M])(func2: M => Result): Result =
+    func1.left.map(errors => BadRequest(errors.mkString(","))).right.map(func2).merge
 
-  def execute(func: Either[Result, Result]): Result = func.merge
-
-  def executeWithTx(func: Either[Result, Result]): Result = DB localTx { implicit session => execute(func) }
+  def executeWithTx[M](func1: => Either[Seq[String], M])(func2: M => Result): Result =
+    DB localTx { implicit session => execute(func1)(func2) }
 
   /** requestのプロトコル */
-  def getProtcol(implicit req: Request[AnyContent]) = if (req.secure) "https" else "http"
+  def getProtcol(implicit req: ReqType) = if (req.secure) "https" else "http"
 
   /** requestのドメイン */
-  def getDomain(implicit req: Request[AnyContent]) = req.headers.get("Host").get
+  def getDomain(implicit req: ReqType) = req.headers.get("Host").get
+
+  def schemeAndHost(implicit req: ReqType) = s"${getProtcol}://${getDomain}"
 }

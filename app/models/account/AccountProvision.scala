@@ -19,7 +19,9 @@ case class AccountProvision(
     """この度は本サービスに登録頂き、誠にありがとうございました。
 以下のURLにアクセスして本登録を完了させて下さい。
 
-%s/account/registration?p=%s"""
+%s/account/registration?p=%s
+
+尚、有効期限は1日となります。"""
 
   /** 本登録用Validation */
   def validateForRegistration = validate(uuidCheck)
@@ -40,9 +42,8 @@ case class AccountProvision(
 object AccountProvision extends ModelFactory {
   def apply(implicit data: Map[String, Any]): AccountProvision = {
     AccountProvision(
-      getOptValue[String]("p"),
-      getOptValue[AccountId]("id").getOrElse(AccountId(0)),
-      null
+      uuid = getOptValue[String]("p"),
+      accountId = getOptValue[AccountId]("id").getOrElse(AccountId(0))
     )
   }
 

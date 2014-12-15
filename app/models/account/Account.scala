@@ -9,7 +9,7 @@ import scalikejdbc.WrappedResultSet
 case class Account(
     id: AccountId,
     name: Option[String],
-    sex: Option[Int],
+    sex: Option[SexType],
     age: Option[Int],
     email: Option[String],
     password: Option[String],
@@ -72,7 +72,7 @@ object Account extends ModelFactory {
     Account(
       getOptValue[AccountId]("id").getOrElse(AccountId(0)),
       getOptValue[String]("name"),
-      getOptValue[Int]("sex"),
+      getOptValue[SexType]("sex"),
       getOptValue[Int]("age"),
       getOptValue[String]("email"),
       getOptValue[String]("pass"),
@@ -85,7 +85,7 @@ object Account extends ModelFactory {
     Account(
       accountId,
       rs.stringOpt(a.c("name")),
-      rs.intOpt(a.c("sex")),
+      SexType.valueOf(rs.short(a.c("sex"))),
       rs.intOpt(a.c("age")),
       rs.stringOpt(a.c("email")),
       rs.stringOpt(a.c("password")),

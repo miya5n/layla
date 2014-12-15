@@ -1,10 +1,10 @@
 body {
-font-family: 'Monotype Corsiva', 'HG³²‘‘Ì-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 margin:20px auto;
 line-height:1.5em;
 }
 h1, h2, h3, h4, h5, h6 {
-font-family: 'Monotype Corsiva', 'HG³²‘‘Ì-PRO', Meiryo, fantasy;
+font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 font-weight:lighter;
 }
 h1 {
